@@ -1,0 +1,39 @@
+<label for="device">Select Device ID:</label>
+<select id="device"></select>
+
+<button onclick="fetchData()">Get Data</button>
+
+<h2>Result:</h2>
+<pre id="result"></pre>
+
+<script>
+    // Populate the dropdown on page load
+    window.onload = function () {
+        fetch('/api/devices')
+            .then(response => response.json())
+            .then(devices => {
+                const select = document.getElementById('device');
+                devices.forEach(id => {
+                    const option = document.createElement('option');
+                    option.value = id;
+                    option.textContent = id;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => {
+                document.getElementById('result').innerText = 'Error loading device list: ' + error;
+            });
+    };
+
+    function fetchData() {
+        const deviceId = document.getElementById('device').value;
+        fetch(`/api/device/${deviceId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result').innerText = 'Error: ' + error;
+            });
+    }
+</script>
