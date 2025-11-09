@@ -2,14 +2,12 @@ version: '3.9'
 
 services:
   query-service:
-    build: ./Query_Service
+    build: .
     environment:
       - MONGODB_URI=mongodb://mongo:27017/iotdb
-      - MONGO_COLLECTION=device_data
+      - MONGO_COLLECTION=sensor_data
     ports:
       - "3000:3000"
-    depends_on:
-      - mongo
     networks:
       - ingestion-network
 
